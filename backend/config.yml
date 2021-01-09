@@ -44,3 +44,4 @@ supervisor:
   loglevel: "info"
   repairBatchSize: 10
   staleTimeout: 120 # Seconds
+  expiration: 3600 # Seconds

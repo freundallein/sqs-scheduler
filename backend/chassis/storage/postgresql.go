@@ -141,3 +141,18 @@ func (repo *PGRepository) RepairStaleTasks(timeout int, batchSize int) (int, err
 	}
 	return int(cmdTag.RowsAffected()), nil
 }
+
+// CleanOldTasks ...
+func (repo *PGRepository) CleanOldTasks(expiration int) (int, error) {
+	query := `
+	delete from t_scheduler 
+	where 
+		state = 'SUCCESS' and 
+		updated_dt < localtimestamp - concat($1::int, ' seconds')::INTERVAL;
+	`
+	cmdTag, err := repo.pool.Exec(context.Background(), query, expiration)
+	if err != nil {
+		return 0, err
+	}
+	return int(cmdTag.RowsAffected()), nil
+}

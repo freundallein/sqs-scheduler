@@ -16,4 +16,5 @@ type TaskRepository interface {
 	SelectTask() (*Task, error)
 	SetTaskResult(*Task) error
 	RepairStaleTasks(timeout int, batchSize int) (int, error)
+	CleanOldTasks(expiration int) (int, error)
 }

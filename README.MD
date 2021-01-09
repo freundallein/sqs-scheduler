@@ -47,7 +47,7 @@ Features:
 - [x] index sql table -> delayed_dt
 - [x] containerization
 - [x] monitoring (prometheus)
-
+- [x] supervisor's db cleaner
 - [ ] task priority
 - [ ] multistage tasks
 - [ ] rabbitmq/kafka integration

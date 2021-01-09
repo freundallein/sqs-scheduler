@@ -63,6 +63,7 @@ type AppConfig struct {
 		LogLevel        string `yaml:"loglevel"`
 		StaleTimeout    int    `yaml:"staleTimeout"`
 		RepairBatchSize int    `yaml:"repairBatchSize"`
+		Expiration      int    `yaml:"expiration"`
 	}
 }
 
