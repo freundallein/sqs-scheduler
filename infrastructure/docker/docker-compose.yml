@@ -1,0 +1,93 @@
+version: "3.5"
+
+networks:
+  network:
+    name: scheduler-network
+    driver: bridge
+volumes:
+  scheduler-db:
+  grafana:
+  grafana-provisioning:
+
+services:
+  submitter:
+    image: freundallein/submitter:latest
+    container_name: submitter
+    restart: always
+    networks:
+      - network
+    volumes:
+      - /Users/freund/Documents/scheduler/backend/config.yml:/go/bin/config.yml
+      - /Users/freund/.aws/credentials:/Users/freund/.aws/credentials
+  scheduler:
+    image: freundallein/scheduler:latest
+    container_name: scheduler
+    restart: always
+    networks:
+      - network
+    volumes:
+      - /Users/freund/Documents/scheduler/backend/config.yml:/go/bin/config.yml
+      - /Users/freund/.aws/credentials:/Users/freund/.aws/credentials
+  worker:
+    image: freundallein/worker:latest
+    container_name: worker
+    restart: always
+    networks:
+      - network
+    volumes:
+      - /Users/freund/Documents/scheduler/backend/config.yml:/go/bin/config.yml
+      - /Users/freund/.aws/credentials:/Users/freund/.aws/credentials
+  resulter:
+    image: freundallein/resulter:latest
+    container_name: resulter
+    restart: always
+    networks:
+      - network
+    volumes:
+      - /Users/freund/Documents/scheduler/backend/config.yml:/go/bin/config.yml
+      - /Users/freund/.aws/credentials:/Users/freund/.aws/credentials
+  supervisor:
+    image: freundallein/supervisor:latest
+    container_name: supervisor
+    restart: always
+    networks:
+      - network
+    volumes:
+      - /Users/freund/Documents/scheduler/backend/config.yml:/go/bin/config.yml
+      - /Users/freund/.aws/credentials:/Users/freund/.aws/credentials
+  storage:
+    image: postgres:latest
+    container_name: pg-db
+    restart: always
+    environment:
+      - POSTGRES_USER=scheduler
+      - POSTGRES_PASSWORD=scheduler
+      - POSTGRES_DB=scheduler
+    volumes:
+      - scheduler-db:/var/lib/postgresql/data/
+    networks:
+      - network
+    ports:
+      - 5432:5432
+    command: postgres -c 'max_connections=1000'
+  # Infrastructure
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: dozzle
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 9999:8080
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prom
+    restart: always
+    volumes:
+      - ./prometheus:/etc/prometheus/
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    networks:
+      - network
+    ports:
+      - 9090:9090

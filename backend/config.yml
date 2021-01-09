@@ -1,0 +1,46 @@
+# Storage
+storage:
+  dsn: "postgresql://scheduler:scheduler@pg-db:5432/scheduler"
+# AWS Specified
+aws:
+  region: "eu-central-1"
+  credentialsFile: "/Users/freund/.aws/credentials"
+  credentialsProfile: "default"
+# Modules
+submitter:
+  queuesrc:
+    name: "inbound-queue-dev"
+    url: "https://sqs.eu-central-1.amazonaws.com/254467326568"
+    readRetries: 5
+  workers: 2
+  loglevel: "debug"
+scheduler:
+  queuedst:
+    name: "outbound-queue-dev"
+    url: "https://sqs.eu-central-1.amazonaws.com/254467326568"
+    readRetries: 5
+  workers: 5
+  loglevel: "info"
+worker:
+  queuesrc:
+    name: "outbound-queue-dev"
+    url: "https://sqs.eu-central-1.amazonaws.com/254467326568"
+    readRetries: 5
+  queuedst:
+    name: "results-queue-dev"
+    url: "https://sqs.eu-central-1.amazonaws.com/254467326568"
+    readRetries: 5
+  workers: 20
+  loglevel: "info"
+resulter:
+  queuesrc:
+    name: "results-queue-dev"
+    url: "https://sqs.eu-central-1.amazonaws.com/254467326568"
+    readRetries: 5
+  workers: 20
+  loglevel: "info"
+supervisor:
+  workers: 1
+  loglevel: "info"
+  repairBatchSize: 10
+  staleTimeout: 120 # Seconds
