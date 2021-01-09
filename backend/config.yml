@@ -12,7 +12,7 @@ submitter:
     name: "inbound-queue-dev"
     url: "https://sqs.eu-central-1.amazonaws.com/254467326568"
     readRetries: 5
-  workers: 2
+  workers: 20
   loglevel: "debug"
 scheduler:
   queuedst:
