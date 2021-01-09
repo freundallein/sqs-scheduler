@@ -12,12 +12,19 @@ Simple distributed task scheduler.
 ![alt text](https://raw.githubusercontent.com/freundallein/scheduler/master/design/scheduler.png "Scheduler")
 
 ## Example worker
-Exports database records from t_object to t_exported_object.  
+Exports sql database records from `t_object` to `t_exported_object`.  
 You can write your own worker's handler and define `action` in all scheduler's packages
 
-## Typical workflow
+## Installation
+- install `aws cli` and set `.credentials` for SQS
 - create SQS with terraform - ```make terraform```
-- deploy scheduler locally with ```make up```
+- build docker images with ```make dockerbuild```
+- start Postgres database with docker-compose
+- run `init.sql` queries in Postgres database to create all tables
+- start scheduler locally with ```make up```
+- stop scheduler with ```make down```
+
+## Typical workflow
 - start inserting random records to t_object and enqueue "export" tasks to SQS with ```make test``` command
 - submitter pulls tasks from SQS and persist them in PG storage as `SCHEDULED` tasks
 - scheduler acquires next task (set `ACQUIRED` state) and enqueue it to SQS
@@ -26,7 +33,7 @@ You can write your own worker's handler and define `action` in all scheduler's p
 - Each task has 10 attempts, then it forced to `CRITICAL_ERROR` and processing of that task stops
 - supervisor fix `ACQUIRED` state to `ERROR` if `ACQUIRED` is longer than `staleTimeout` seconds
 - all operation should be idempotent and retryable (and they are)
-- stop scheduler with ```make down```
+
 
 Features:  
 - [x] multiworkers per instance  
