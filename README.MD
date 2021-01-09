@@ -8,6 +8,9 @@ Simple distributed task scheduler.
 - Amazon SQS
 - JSON-RPC 2.0
 
+## Design
+![alt text](https://raw.githubusercontent.com/freundallein/scheduler/master/design/scheduler.png "Scheduler")
+
 ## Example worker
 Exports database records from t_object to t_exported_object.  
 You can write your own worker's handler and define `action` in all scheduler's packages
