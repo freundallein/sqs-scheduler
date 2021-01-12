@@ -57,7 +57,7 @@ func worker(ctx context.Context, cfg *Config, workerID int, group *sync.WaitGrou
 				log.WithFields(log.Fields{
 					"event":  "unsupported_message",
 					"worker": workerID,
-				}).Error(err)
+				}).Error("no objectID supported")
 				continue
 			}
 			var action storage.Action

@@ -9,6 +9,8 @@ fmt:
 	cd backend && go fmt ./...
 
 # dev
+local:
+	cd backend && go run cmd/local/main.go
 test:
 	cd backend && go run cmd/test/test.go
 submitter:

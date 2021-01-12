@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	errorChance = 0.05 // 5% error chance
+	errorChance = 0.001 // 0.1% error chance
 )
 
 // RandomizeError with some probability generates a random "monkey" error.

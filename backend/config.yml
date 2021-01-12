@@ -13,7 +13,7 @@ submitter:
     url: "https://sqs.eu-central-1.amazonaws.com/254467326568"
     readRetries: 5
   workers: 20
-  loglevel: "debug"
+  loglevel: "info"
 scheduler:
   queuedst:
     name: "outbound-queue-dev"
